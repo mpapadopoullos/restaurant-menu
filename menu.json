@@ -1,0 +1,155 @@
+{
+  "restaurant": {
+    "name": "YATEL",
+    "description": "Cocina mediterránea con alma",
+    "url": "https://menu.yatel.com",
+    "currency": "€",
+    "language": "es"
+  },
+  "tags": {
+    "vegan": { "label": "Vegano", "icon": "icons/vegan.svg" },
+    "gluten": { "label": "Gluten", "icon": "icons/gluten.svg" },
+    "dairy": { "label": "Lácteos", "icon": "icons/dairy.svg" },
+    "spicy": { "label": "Picante", "icon": "icons/spicy.svg" }
+  },
+  "categories": [
+    {
+      "id": "starters",
+      "name": "Entrantes",
+      "items": [
+        {
+          "name": "Hummus artesanal",
+          "description": "Garbanzos ecológicos, tahini, aceite de oliva virgen extra y limón. Servido con pan pita tostado.",
+          "price": 7.5,
+          "tags": ["vegan"]
+        },
+        {
+          "name": "Croquetas de jamón ibérico",
+          "description": "Bechamel cremosa con jamón ibérico de bellota, rebozadas en pan rallado artesanal.",
+          "price": 9.0,
+          "tags": ["gluten", "dairy"]
+        },
+        {
+          "name": "Burrata con tomate",
+          "description": "Burrata fresca sobre cama de tomates cherry asados, albahaca y aceite de albahaca.",
+          "price": 10.5,
+          "tags": ["dairy"]
+        },
+        {
+          "name": "Patatas bravas YATEL",
+          "description": "Patatas fritas con nuestra salsa brava picante casera y alioli suave.",
+          "price": 6.5,
+          "tags": ["vegan", "spicy"]
+        }
+      ]
+    },
+    {
+      "id": "mains",
+      "name": "Principales",
+      "items": [
+        {
+          "name": "Risotto de setas silvestres",
+          "description": "Arroz arborio con mezcla de setas de temporada, trufa negra, parmesano y mantequilla.",
+          "price": 16.5,
+          "tags": ["gluten", "dairy"]
+        },
+        {
+          "name": "Tagine de verduras",
+          "description": "Guiso marroquí de verduras de temporada con especias ras el hanout, garbanzos y cuscús.",
+          "price": 14.0,
+          "tags": ["vegan", "gluten"]
+        },
+        {
+          "name": "Lubina a la plancha",
+          "description": "Lubina salvaje a la plancha con guarnición de verduras asadas y salsa de alcaparras y limón.",
+          "price": 21.0,
+          "tags": []
+        },
+        {
+          "name": "Curry rojo de tofu",
+          "description": "Tofu firme en curry rojo tailandés con leche de coco, pimientos y arroz jazmín.",
+          "price": 13.5,
+          "tags": ["vegan", "spicy"]
+        }
+      ]
+    },
+    {
+      "id": "salads",
+      "name": "Ensaladas",
+      "items": [
+        {
+          "name": "Ensalada griega",
+          "description": "Tomate, pepino, aceituna kalamata, cebolla roja y queso feta. Aliñada con orégano y aceite de oliva.",
+          "price": 9.5,
+          "tags": ["dairy"]
+        },
+        {
+          "name": "Buddha bowl verde",
+          "description": "Quinoa, aguacate, edamame, espinaca baby, zanahoria rallada y aderezo de tahini con limón.",
+          "price": 11.0,
+          "tags": ["vegan"]
+        },
+        {
+          "name": "Ensalada de la huerta",
+          "description": "Lechuga roble, tomate kumato, rábanos, pepino y vinagreta de mostaza Dijon.",
+          "price": 8.0,
+          "tags": ["vegan"]
+        }
+      ]
+    },
+    {
+      "id": "desserts",
+      "name": "Postres",
+      "items": [
+        {
+          "name": "Tarta de queso al horno",
+          "description": "Tarta de queso estilo vasco, cremosa y ligeramente caramelizada por fuera. Servida con mermelada de frutos rojos.",
+          "price": 7.0,
+          "tags": ["gluten", "dairy"]
+        },
+        {
+          "name": "Coulant de chocolate negro",
+          "description": "Bizcocho templado de chocolate 70% con corazón fundente, helado de vainilla y cacao en polvo.",
+          "price": 7.5,
+          "tags": ["gluten", "dairy"]
+        },
+        {
+          "name": "Sorbete de mango y chile",
+          "description": "Sorbete artesanal de mango con toque de chile de árbol y menta fresca. Sin lactosa.",
+          "price": 5.5,
+          "tags": ["vegan", "spicy"]
+        }
+      ]
+    },
+    {
+      "id": "drinks",
+      "name": "Bebidas",
+      "items": [
+        {
+          "name": "Agua mineral",
+          "description": "Agua mineral natural o con gas (50 cl).",
+          "price": 2.0,
+          "tags": ["vegan"]
+        },
+        {
+          "name": "Limonada casera",
+          "description": "Limonada fresca elaborada con limones de Málaga, hierbabuena y un toque de jengibre.",
+          "price": 3.5,
+          "tags": ["vegan"]
+        },
+        {
+          "name": "Vino de la casa",
+          "description": "Selección de vino tinto, blanco o rosado de la Denominación de Origen Málaga (copa).",
+          "price": 4.0,
+          "tags": []
+        },
+        {
+          "name": "Café solo / cortado",
+          "description": "Café de especialidad de origen único, preparado en espresso.",
+          "price": 2.5,
+          "tags": ["dairy"]
+        }
+      ]
+    }
+  ]
+}

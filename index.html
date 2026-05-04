@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO: Primary -->
+  <title>Carta | YATEL</title>
+  <meta name="description" content="Consulta la carta de YATEL. Cocina mediterránea con alma, con opciones veganas, sin gluten y más." />
+  <link rel="canonical" href="https://menu.yatel.com" />
+
+  <!-- SEO: Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://menu.yatel.com" />
+  <meta property="og:title" content="Carta | YATEL" />
+  <meta property="og:description" content="Cocina mediterránea con alma. Descubre nuestra carta." />
+  <meta property="og:image" content="https://menu.yatel.com/images/cover.jpg" />
+
+  <!-- SEO: Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Carta | YATEL" />
+  <meta name="twitter:description" content="Cocina mediterránea con alma. Descubre nuestra carta." />
+
+  <!-- SEO: Geo -->
+  <meta name="geo.region" content="ES-MA" />
+  <meta name="geo.placename" content="Málaga" />
+
+  <!-- SEO: Structured Data (static, crawler-friendly) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "YATEL",
+    "description": "Cocina mediterránea con alma",
+    "image": "https://menu.yatel.com/images/cover.jpg",
+    "url": "https://menu.yatel.com",
+    "servesCuisine": "Mediterranean",
+    "hasMenu": {
+      "@type": "Menu",
+      "name": "Carta YATEL",
+      "hasMenuSection": [
+        { "@type": "MenuSection", "name": "Entrantes" },
+        { "@type": "MenuSection", "name": "Principales" },
+        { "@type": "MenuSection", "name": "Ensaladas" },
+        { "@type": "MenuSection", "name": "Postres" },
+        { "@type": "MenuSection", "name": "Bebidas" }
+      ]
+    }
+  }
+  </script>
+
+  <!-- Performance: preload data -->
+  <link rel="preload" href="menu.json" as="fetch" crossorigin="anonymous" />
+
+  <!-- Alpine.js -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body x-data="menuApp()" x-init="init()">
+
+  <!-- ── Header ─────────────────────────────────────────────────────────── -->
+  <header class="site-header">
+    <h1 x-text="menu.restaurant ? menu.restaurant.name : 'YATEL'"></h1>
+    <p x-text="menu.restaurant ? menu.restaurant.description : ''"></p>
+
+    <button
+      class="dark-toggle"
+      @click="toggleDark()"
+      :aria-label="darkMode ? 'Activar modo claro' : 'Activar modo oscuro'"
+      :title="darkMode ? 'Modo claro' : 'Modo oscuro'"
+    >
+      <span x-text="darkMode ? '☀️' : '🌙'"></span>
+    </button>
+  </header>
+
+  <!-- ── Category Nav ───────────────────────────────────────────────────── -->
+  <nav class="categories" aria-label="Categorías del menú">
+    <template x-for="cat in menu.categories || []" :key="cat.id">
+      <button
+        class="cat-btn"
+        :class="{ active: activeCategory === cat.id }"
+        @click="activeCategory = cat.id"
+        :aria-current="activeCategory === cat.id ? 'true' : 'false'"
+        x-text="cat.name"
+      ></button>
+    </template>
+  </nav>
+
+  <!-- ── Filter Bar ─────────────────────────────────────────────────────── -->
+  <div class="filters" role="group" aria-label="Filtros dietéticos">
+    <span class="filter-label">Filtros</span>
+
+    <template x-for="[key, tag] in Object.entries(menu.tags || {})" :key="key">
+      <button
+        class="filter-chip"
+        :class="{ active: activeFilters.includes(key) }"
+        @click="toggleFilter(key)"
+        :aria-pressed="activeFilters.includes(key) ? 'true' : 'false'"
+      >
+        <img
+          :src="tag.icon"
+          :alt="tag.label"
+          width="14"
+          height="14"
+          loading="lazy"
+        />
+        <span x-text="tag.label"></span>
+      </button>
+    </template>
+
+    <button
+      class="filter-clear"
+      x-show="activeFilters.length > 0"
+      @click="activeFilters = []"
+      aria-label="Limpiar filtros"
+    >
+      Limpiar
+    </button>
+  </div>
+
+  <!-- ── Menu Sections ──────────────────────────────────────────────────── -->
+  <main class="container">
+    <template x-if="!menu.categories">
+      <div class="loading" role="status" aria-live="polite">Cargando carta…</div>
+    </template>
+
+    <template x-for="cat in menu.categories || []" :key="cat.id">
+      <section
+        class="menu-section"
+        x-show="activeCategory === cat.id"
+        :aria-label="cat.name"
+      >
+        <h2 class="section-title" x-text="cat.name"></h2>
+
+        <template x-if="filteredItems(cat.items).length === 0">
+          <p class="empty-state">
+            Ningún plato coincide con los filtros seleccionados.
+          </p>
+        </template>
+
+        <div class="menu-items-grid">
+          <template x-for="item in filteredItems(cat.items)" :key="item.name">
+            <article class="menu-item">
+
+              <div class="item-header">
+                <h3 class="item-name" x-text="item.name"></h3>
+                <span class="item-price" x-text="formatPrice(item.price)"></span>
+              </div>
+
+              <p class="item-description" x-text="item.description"></p>
+
+              <div
+                class="item-tags"
+                x-show="item.tags && item.tags.length > 0"
+                aria-label="Etiquetas dietéticas"
+              >
+                <template x-for="tag in item.tags" :key="tag">
+                  <span class="item-tag">
+                    <img
+                      :src="menu.tags[tag].icon"
+                      :alt="menu.tags[tag].label"
+                      width="12"
+                      height="12"
+                      loading="lazy"
+                    />
+                    <span x-text="menu.tags[tag].label"></span>
+                  </span>
+                </template>
+              </div>
+
+            </article>
+          </template>
+        </div>
+      </section>
+    </template>
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <p>© <span x-text="new Date().getFullYear()"></span> YATEL. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    function menuApp() {
+      return {
+        menu: {},
+        activeCategory: null,
+        activeFilters: [],
+        darkMode: false,
+
+        async init() {
+          // Resolve initial theme before data load to avoid flash
+          const stored = localStorage.getItem('yatel-theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          this.darkMode = stored ? stored === 'dark' : prefersDark;
+          document.documentElement.dataset.theme = this.darkMode ? 'dark' : 'light';
+
+          try {
+            const res = await fetch('menu.json');
+            if (!res.ok) throw new Error('No se pudo cargar el menú');
+            this.menu = await res.json();
+            if (this.menu.categories && this.menu.categories.length > 0) {
+              this.activeCategory = this.menu.categories[0].id;
+            }
+          } catch (err) {
+            console.error('Error cargando menu.json:', err);
+          }
+        },
+
+        toggleDark() {
+          this.darkMode = !this.darkMode;
+          const theme = this.darkMode ? 'dark' : 'light';
+          document.documentElement.dataset.theme = theme;
+          localStorage.setItem('yatel-theme', theme);
+        },
+
+        toggleFilter(tag) {
+          const idx = this.activeFilters.indexOf(tag);
+          if (idx === -1) {
+            this.activeFilters.push(tag);
+          } else {
+            this.activeFilters.splice(idx, 1);
+          }
+        },
+
+        filteredItems(items) {
+          if (!items) return [];
+          if (this.activeFilters.length === 0) return items;
+          return items.filter(item =>
+            this.activeFilters.every(tag => item.tags && item.tags.includes(tag))
+          );
+        },
+
+        formatPrice(price) {
+          const currency = this.menu.restaurant ? this.menu.restaurant.currency : '€';
+          return price.toFixed(2) + '\u00a0' + currency;
+        }
+      };
+    }
+  </script>
+
+</body>
+</html>
